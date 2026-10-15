@@ -19,6 +19,7 @@ SORA/
   docs/
     УСТАНОВКА-ПО-ШАГАМ.md   пошаговая инструкция монтажа с нуля
     ПРОВЕРКА-КЛЮЧЕЙ.md      стенд проверки ключей: офлайн и Docker
+    TELEGRAM-ДОСТУП.md      почему бот молчит с VPS и как это чинится
     index.html              обзорная страница
 
   tools/                   РАБОТАЕТ НА ВАШЕМ КОМПЬЮТЕРЕ
@@ -30,6 +31,7 @@ SORA/
     sora_secrets.py        мастер настройки хранения ключей
     sora_keyscan.py        офлайн-анализ конфигов, без сети
     sora_warpcheck.py      живой стенд проверки ключа, в Docker
+    sora_telegram.py       доступ к Telegram API: диагностика и обход
     Dockerfile.warpcheck   образ для стенда
     find_cyrillic.py       проверка скриптов перед публикацией
     publish_check.py       проверка, что ключи не утёкли
@@ -38,6 +40,7 @@ SORA/
     test_sora_traffic.py   тесты счёта трафика
     test_sora_apply.py     тесты отключения
     test_sora_keys.py      тесты генератора ключей
+    test_sora_telegram.py  тесты инструмента доступа к Telegram
     test_sora_server.sh    тесты серверных скриптов
 
   server/                  ЖИВЁТ НА СЕРВЕРЕ
