@@ -1,0 +1,41 @@
+# Образ для стенда проверки ключа WARP.
+#
+# ПОЧЕМУ DEBIAN, А НЕ ALPINE
+#
+# Ядро у всех контейнеров одно — то, что у хоста. Образ ядро не
+# меняет, поэтому на сообщение «this kernel has first class
+# support for AmneziaWG» образ не влияет: это уведомление, а не
+# отказ. Работать бинарник будет и там, и там.
+#
+# Но alpine не содержит `ip` (iproute2), а без него нельзя
+# поднять интерфейс и переключить маршрут по умолчанию. Без
+# маршрута пакеты идут мимо туннеля обычным путём контейнера,
+# и проверка даёт ложный отрицательный результат. Debian
+# Bookworm Slim весит 116 МБ и содержит всё нужное.
+#
+# ЧТО ЗДЕСЬ ЛЕЖИТ
+#
+#   amneziawg-go — тот же бинарник, что работает на сервере SORA
+#   awg          — чтение состояния через UAPI-сокет
+#   ping, ip     — чтобы поднять туннель и проверить прохождение
+
+FROM debian:bookworm-slim
+
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends \
+      iproute2 \
+      iputils-ping \
+ && rm -rf /var/lib/apt/lists/*
+
+COPY server/bin/amneziawg-go-linux-amd64 /usr/local/bin/amneziawg-go
+COPY server/bin/awg                   /usr/local/bin/awg
+COPY server/bin/awg-quick             /usr/local/bin/awg-quick
+
+RUN chmod +x /usr/local/bin/amneziawg-go \
+            /usr/local/bin/awg \
+            /usr/local/bin/awg-quick
+
+# Точка входа пустая: запускаем контейнер со своей командой,
+# она поднимает туннель на 10–20 секунд и гасит всё.
+ENTRYPOINT []
+CMD ["/bin/sh"]

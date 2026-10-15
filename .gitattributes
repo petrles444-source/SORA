@@ -1,0 +1,15 @@
+# Скрипты на bash ОБЯЗАНЫ иметь LF. Возврат каретки в конце
+# shebang делает файл неисполняемым: bash ищет /bin/bash с
+# хвостом-возвратом каретки, которого не существует.
+* text=auto eol=lf
+
+*.sh    text eol=lf
+*.py    text eol=lf
+*.md    text eol=lf
+*.json  text eol=lf
+*.conf  text eol=lf
+*.html  text eol=lf
+*.txt   text eol=lf
+
+# Бинарники не трогать: перевод строк внутри ELF ломает файл.
+server/bin/* binary

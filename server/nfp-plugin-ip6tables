@@ -1,0 +1,40 @@
+#!/bin/bash
+# Плагин ip6tables для netfilter-persistent.
+# Устройство то же, что у plugin-iptables: в пакете Debian 12
+# каталог плагинов пуст, поэтому save и start ничего не делают.
+# Особенно важно для IPv6: без сохранения правил ip6tables
+# после перезагрузки туннель получает утечку IPv6.
+
+set -e
+
+RULES_FILE="/etc/iptables/rules.v6"
+
+case "${1:-}" in
+    save)
+        mkdir -p /etc/iptables
+        ip6tables-save > "${RULES_FILE}"
+        echo "ip6tables: сохранено в ${RULES_FILE}"
+        ;;
+
+    start)
+        if [ -f "${RULES_FILE}" ]; then
+            ip6tables-restore < "${RULES_FILE}"
+            echo "ip6tables: правила загружены из ${RULES_FILE}"
+        else
+            echo "ip6tables: файла ${RULES_FILE} нет — пропускаю"
+        fi
+        ;;
+
+    flush)
+        ip6tables -F
+        ip6tables -X
+        echo "ip6tables: правила очищены"
+        ;;
+
+    *)
+        echo "Использование: $0 (start|save|flush)"
+        exit 1
+        ;;
+esac
+
+exit 0

@@ -1,0 +1,58 @@
+#!/bin/bash
+# Плагин iptables для netfilter-persistent.
+#
+# ЗАЧЕМ ОН НУЖЕН, ЕСЛИ ПАКЕТ ЕГО НЕ СОДЕРИТ.
+#
+# Проверено на Debian 12.15, 15.10.2026:
+#     dpkg -L netfilter-persistent | grep plugins.d
+#     /usr/share/netfilter-persistent/plugins.d      <- только каталог, файлов нет
+#
+# Скрипт /usr/sbin/netfilter-persistent всю работу делает через
+#     run-parts -v -a ${1} ${PLUGINS}
+# то есть запускает всё, что лежит в этом каталоге. Каталог пуст —
+# значит ни save, ни start не делают НИЧЕГО, при этом выходят с
+# кодом 0. Выглядит как успех.
+#
+# Проверено фактически:
+#     netfilter-persistent save   -> код 0, /etc/iptables/ остаётся пустым
+#
+# Итог: правила живут только в памяти и пропадают при перезагрузке,
+# а VPN молча перестаёт работать. Именно тот отказ, ради которого
+# ставится netfilter-persistent.
+#
+# Плагин делает ровно то, что делает штатный: iptables-restore при
+# старте, iptables-save при сохранении, очистка при stop.
+
+set -e
+
+RULES_FILE="/etc/iptables/rules.v4"
+
+case "${1:-}" in
+    save)
+        mkdir -p /etc/iptables
+        iptables-save > "${RULES_FILE}"
+        echo "iptables: сохранено в ${RULES_FILE}"
+        ;;
+
+    start)
+        if [ -f "${RULES_FILE}" ]; then
+            iptables-restore < "${RULES_FILE}"
+            echo "iptables: правила загружены из ${RULES_FILE}"
+        else
+            echo "iptables: файла ${RULES_FILE} нет — пропускаю"
+        fi
+        ;;
+
+    flush)
+        iptables -F
+        iptables -X
+        echo "iptables: правила очищены"
+        ;;
+
+    *)
+        echo "Использование: $0 (start|save|flush)"
+        exit 1
+        ;;
+esac
+
+exit 0

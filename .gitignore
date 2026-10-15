@@ -1,0 +1,16 @@
+# Ключи, которые появятся у того, кто клонировал репозиторий.
+# Демо-примеры client/example-*.conf лежат рядом и не прячутся:
+# они сгенерированы заново и соответствуют ни одному серверу.
+client/registry.json
+client/secrets/secrets.local.json
+client/secrets/secrets.local.backup.json
+
+# Отчёты и отладочные файлы
+*.bak
+*.testbak
+docs/otchet-*.html
+__pycache__/
+*.pyc
+
+# Резервные копии реестра (внутри содержат приватные ключи)
+sora-keys-*.json
