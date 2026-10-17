@@ -39,10 +39,14 @@ body{background:var(--bg);color:var(--txt);line-height:1.65;
 .btn-ghost{background:transparent;color:var(--accent);border:1.5px solid rgba(56,189,248,.4)}
 .btn-ghost:hover{background:rgba(56,189,248,.08)}
 
-.facts{display:flex;gap:36px;flex-wrap:wrap}
-.facts div{display:flex;flex-direction:column}
-.facts b{font-size:28px;font-weight:800;color:var(--accent);line-height:1.2}
-.facts span{font-size:13px;color:var(--dim)}
+/* Класс в разметке — hero-facts, а правила здесь были только для .facts.
+   Совпадения не было, блок оставался без раскладки, и «10» с «модулей
+   курса» печатались слитно. Оба класса в селекторе: .facts ещё нужен
+   странице со светлой темой. */
+.hero-facts,.facts{display:flex;gap:36px;flex-wrap:wrap}
+.hero-facts div,.facts div{display:flex;flex-direction:column}
+.hero-facts b,.facts b{font-size:28px;font-weight:800;color:var(--accent);line-height:1.2}
+.hero-facts span,.facts span{font-size:13px;color:var(--dim)}
 
 .sect{padding:58px 0;border-top:1px solid var(--line)}
 .sect.alt{background:var(--bg-alt)}
@@ -122,7 +126,7 @@ footer p{margin-bottom:6px}
 @media(max-width:700px){
   .nav nav a:not(.net-btn){display:none}
   .hero{padding:44px 0 36px}
-  .facts{gap:24px}.facts b{font-size:23px}
+  .hero-facts,.facts{gap:24px}.hero-facts b,.facts b{font-size:23px}
   .sect{padding:44px 0}
   .cta .btn{width:100%;text-align:center}
 }
