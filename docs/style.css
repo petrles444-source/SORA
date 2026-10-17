@@ -1,0 +1,284 @@
+/* SORA — страница проекта. Один файл, без зависимостей. */
+
+:root {
+  --bg: #0b1220;
+  --bg-alt: #0f1a2b;
+  --card: #16233a;
+  --line: #24344f;
+  --txt: #e6edf6;
+  --dim: #93a4bd;
+  --accent: #38bdf8;
+  --accent2: #22d3ee;
+  --ok: #4ade80;
+  --warn: #fbbf24;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 74px; }
+
+body {
+  background: var(--bg);
+  color: var(--txt);
+  font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+.wrap.narrow { max-width: 760px; }
+
+/* ---------- Шапка ---------- */
+.nav {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(11, 18, 32, .88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+}
+.nav .wrap {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 62px;
+}
+.brand {
+  display: flex; align-items: center; gap: 9px;
+  color: var(--txt); text-decoration: none;
+  font-weight: 800; font-size: 19px; letter-spacing: .4px;
+}
+.nav nav { display: flex; align-items: center; gap: 22px; }
+.nav nav a {
+  color: var(--dim); text-decoration: none; font-size: 14.5px;
+  transition: color .15s;
+}
+.nav nav a:hover { color: var(--accent); }
+.btn-mini {
+  padding: 7px 15px; border-radius: 7px;
+  background: rgba(56, 189, 248, .12);
+  color: var(--accent) !important; font-weight: 600;
+}
+
+/* ---------- Экран главный ---------- */
+.hero { padding: 74px 0 56px; position: relative; overflow: hidden; }
+.hero::before {
+  content: ""; position: absolute; inset: -40% 50% auto -20%;
+  height: 520px; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(56, 189, 248, .17), transparent);
+}
+.hero-badge {
+  display: inline-block; margin-bottom: 22px;
+  padding: 6px 14px; border-radius: 999px;
+  background: rgba(56, 189, 248, .1); border: 1px solid rgba(56, 189, 248, .28);
+  color: var(--accent); font-size: 13.5px; font-weight: 600;
+}
+.hero h1 {
+  font-size: clamp(36px, 7vw, 62px); line-height: 1.06;
+  font-weight: 800; letter-spacing: -1.6px; margin-bottom: 22px;
+}
+.grad {
+  background: linear-gradient(100deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero-sub {
+  font-size: clamp(16px, 2.2vw, 19px); color: var(--dim);
+  max-width: 640px; margin-bottom: 32px;
+}
+.hero-btns { display: flex; gap: 13px; flex-wrap: wrap; margin-bottom: 46px; }
+.hero-btns.center { justify-content: center; }
+.btn {
+  display: inline-block; padding: 13px 26px; border-radius: 9px;
+  text-decoration: none; font-weight: 700; font-size: 15.5px;
+  transition: transform .12s, filter .15s;
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-main {
+  background: linear-gradient(100deg, var(--accent), var(--accent2));
+  color: #06121f;
+}
+.btn-main:hover { filter: brightness(1.08); }
+.btn-ghost {
+  background: transparent; color: var(--accent);
+  border: 1.5px solid rgba(56, 189, 248, .4);
+}
+.btn-ghost:hover { background: rgba(56, 189, 248, .08); }
+
+.hero-facts { display: flex; gap: 42px; flex-wrap: wrap; }
+.hero-facts div { display: flex; flex-direction: column; }
+.hero-facts b {
+  font-size: 30px; font-weight: 800; color: var(--accent);
+  line-height: 1.15; letter-spacing: -.5px;
+}
+.hero-facts span { font-size: 13.5px; color: var(--dim); }
+
+/* ---------- Секции ---------- */
+.sect { padding: 66px 0; border-top: 1px solid var(--line); }
+.sect.alt { background: var(--bg-alt); }
+.sect h2 {
+  font-size: clamp(25px, 4vw, 34px); font-weight: 800;
+  letter-spacing: -.7px; margin-bottom: 14px;
+}
+.lead { color: var(--dim); max-width: 700px; margin-bottom: 30px; font-size: 16.5px; }
+.cap { color: var(--dim); font-size: 14px; text-align: center; margin-top: 16px; }
+
+/* ---------- Карточки ---------- */
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(268px, 1fr)); gap: 18px; }
+.card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 13px; padding: 26px 24px;
+}
+.card .ico { font-size: 27px; margin-bottom: 13px; }
+.card h3 { font-size: 17.5px; font-weight: 700; margin-bottom: 9px; }
+.card p { color: var(--dim); font-size: 15px; }
+
+/* ---------- Честный блок ---------- */
+.honest {
+  margin-top: 22px; padding: 22px 24px;
+  background: rgba(251, 191, 36, .06);
+  border: 1px solid rgba(251, 191, 36, .26);
+  border-left: 4px solid var(--warn); border-radius: 9px;
+}
+.honest-title { font-weight: 700; color: var(--warn); margin-bottom: 13px; font-size: 15.5px; }
+.honest ul { list-style: none; }
+.honest li {
+  position: relative; padding-left: 22px; margin-bottom: 10px;
+  color: var(--dim); font-size: 14.8px;
+}
+.honest li::before {
+  content: "×"; position: absolute; left: 2px; top: -1px;
+  color: var(--warn); font-weight: 800; font-size: 17px;
+}
+.honest b { color: var(--txt); }
+
+/* ---------- Схемы ---------- */
+.diagram {
+  display: block; margin: 26px auto 0; max-width: 100%;
+  border-radius: 11px; border: 1px solid var(--line); background: #fff;
+}
+.diagram.term { background: var(--bg-alt); }
+
+/* ---------- Шаги ---------- */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(288px, 1fr)); gap: 18px; }
+.step {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 13px; padding: 24px;
+}
+.step-n {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: linear-gradient(100deg, var(--accent), var(--accent2));
+  color: #06121f; font-weight: 800; font-size: 15px;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 13px;
+}
+.step h3 { font-size: 17px; margin-bottom: 9px; }
+.step p { color: var(--dim); font-size: 14.5px; margin-bottom: 13px; }
+
+/* ---------- Код ---------- */
+pre {
+  background: #0a1424; border: 1px solid var(--line); border-radius: 9px;
+  padding: 15px 17px; overflow-x: auto; margin-bottom: 14px;
+}
+pre code {
+  font-family: "SF Mono", Consolas, "Cascadia Code", Menlo, monospace;
+  font-size: 13.4px; color: #cbd5e1; line-height: 1.62;
+}
+pre.big { max-width: 380px; margin: 22px auto; }
+pre.big code { font-size: 16px; color: var(--accent); font-weight: 600; }
+code {
+  font-family: "SF Mono", Consolas, Menlo, monospace;
+  background: rgba(56, 189, 248, .1); color: var(--accent);
+  padding: 2px 6px; border-radius: 4px; font-size: .9em;
+}
+pre code { background: none; padding: 0; color: inherit; }
+
+/* ---------- Проверка ---------- */
+.check-box {
+  margin-top: 26px; padding: 24px;
+  background: rgba(74, 222, 128, .05);
+  border: 1px solid rgba(74, 222, 128, .24); border-radius: 11px;
+}
+.check-t { font-weight: 700; color: var(--ok); margin-bottom: 13px; }
+.check-box p { color: var(--dim); font-size: 14.5px; margin-bottom: 9px; }
+.check-box p:last-child { margin-bottom: 0; }
+
+/* ---------- Кнопки ---------- */
+.cta-row { display: flex; gap: 13px; flex-wrap: wrap; margin-top: 30px; }
+
+/* ---------- Две колонки ---------- */
+.two { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; margin-bottom: 26px; }
+.col {
+  padding: 24px; border-radius: 13px;
+  border: 1px solid var(--line); background: var(--card);
+}
+.col.good { border-color: rgba(74, 222, 128, .3); background: rgba(74, 222, 128, .05); }
+.col h3 { font-size: 17px; margin-bottom: 15px; }
+.col ul { list-style: none; }
+.col li { position: relative; padding-left: 24px; margin-bottom: 10px; color: var(--dim); font-size: 14.6px; }
+.col li::before { position: absolute; left: 2px; font-weight: 800; font-size: 15px; }
+.minus li::before { content: "×"; color: var(--warn); }
+.plus li::before { content: "✓"; color: var(--ok); }
+
+/* ---------- Модули ---------- */
+.mod-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(212px, 1fr)); gap: 12px; }
+.mod {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 16px; border-radius: 10px;
+  background: var(--card); border: 1px solid var(--line);
+}
+.mod b {
+  min-width: 34px; color: var(--accent); font-weight: 800; font-size: 15px;
+}
+.mod span { font-size: 14.2px; color: var(--dim); }
+
+/* ---------- Скачивание ---------- */
+.download {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 22px; flex-wrap: wrap;
+  margin-top: 30px; padding: 26px;
+  background: linear-gradient(100deg, rgba(56, 189, 248, .1), rgba(34, 211, 238, .05));
+  border: 1px solid rgba(56, 189, 248, .28); border-radius: 13px;
+}
+.download h3 { font-size: 19px; margin-bottom: 5px; }
+.download p { color: var(--dim); font-size: 14.5px; }
+
+/* ---------- Вопросы ---------- */
+details {
+  border: 1px solid var(--line); border-radius: 11px;
+  padding: 17px 20px; margin-bottom: 11px;
+  background: var(--card);
+}
+summary {
+  cursor: pointer; font-weight: 600; font-size: 16px;
+  list-style: none; position: relative; padding-right: 26px;
+}
+summary::-webkit-details-marker { display: none; }
+summary::after {
+  content: "+"; position: absolute; right: 0; top: -2px;
+  font-size: 22px; color: var(--accent); font-weight: 400;
+}
+details[open] summary::after { content: "−"; }
+details p { color: var(--dim); margin-top: 13px; font-size: 14.8px; }
+
+/* ---------- Выход ---------- */
+.outro { padding: 76px 0; text-align: center; border-top: 1px solid var(--line); }
+.outro h2 { margin-bottom: 14px; }
+.outro p { color: var(--dim); margin-bottom: 30px; }
+
+footer {
+  padding: 32px 0; border-top: 1px solid var(--line);
+  text-align: center; color: var(--dim); font-size: 13.8px;
+}
+footer p { margin-bottom: 8px; }
+footer .dim { color: #64748b; font-size: 13px; }
+footer a { color: var(--accent); text-decoration: none; }
+footer a:hover { text-decoration: underline; }
+
+/* ---------- Телефон ---------- */
+@media (max-width: 720px) {
+  .nav nav { gap: 14px; }
+  .nav nav a:not(.btn-mini) { display: none; }
+  .hero { padding: 48px 0 40px; }
+  .hero-facts { gap: 26px; }
+  .hero-facts b { font-size: 24px; }
+  .sect { padding: 48px 0; }
+  .download { flex-direction: column; align-items: flex-start; }
+  .hero-btns .btn { width: 100%; text-align: center; }
+}

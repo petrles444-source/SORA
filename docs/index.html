@@ -3,461 +3,306 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SORA — личный VPN на своём сервере</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:'Segoe UI',system-ui,-apple-system,sans-serif;
-  background:#080a0f;color:#dce3ec;line-height:1.65;
-  -webkit-font-smoothing:antialiased
-}
-.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
-h1,h2,h3{font-weight:600;letter-spacing:-.02em;color:#fff}
-code,.mono{font-family:'JetBrains Mono',Consolas,monospace}
-
-/* ── шапка ── */
-header{
-  padding:96px 0 88px;position:relative;overflow:hidden;
-  border-bottom:1px solid #161b24
-}
-header::before{
-  content:'';position:absolute;inset:0;
-  background:
-    radial-gradient(900px 400px at 15% -10%,rgba(56,189,248,.13),transparent 60%),
-    radial-gradient(700px 350px at 85% 0%,rgba(139,92,246,.11),transparent 60%)
-}
-header .wrap{position:relative}
-.badge{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:6px 14px;border-radius:999px;font-size:12.5px;
-  background:rgba(56,189,248,.09);border:1px solid rgba(56,189,248,.28);
-  color:#7dd3fc;margin-bottom:26px;letter-spacing:.03em
-}
-.badge i{width:6px;height:6px;border-radius:50%;background:#38bdf8;
-  box-shadow:0 0 10px #38bdf8}
-h1{font-size:clamp(34px,5.5vw,58px);line-height:1.08;margin-bottom:20px}
-h1 em{font-style:normal;color:#38bdf8}
-.подзаголовок{font-size:19px;color:#8f9bad;max-width:660px}
-.кнопки{display:flex;gap:14px;margin-top:38px;flex-wrap:wrap}
-.btn{
-  display:inline-block;padding:13px 26px;border-radius:9px;
-  font-size:15px;font-weight:600;text-decoration:none;
-  transition:transform .16s,box-shadow .16s,background .16s
-}
-.btn-1{background:#38bdf8;color:#04121d}
-.btn-1:hover{background:#7dd3fc;transform:translateY(-2px);
-  box-shadow:0 10px 28px rgba(56,189,248,.28)}
-.btn-2{border:1px solid #2a323f;color:#c8d2e0}
-.btn-2:hover{border-color:#38bdf8;color:#7dd3fc;transform:translateY(-2px)}
-
-/* ── секции ── */
-section{padding:76px 0}
-h2{font-size:clamp(26px,3.4vw,36px);margin-bottom:14px}
-.вступление{color:#8f9bad;max-width:700px;margin-bottom:44px;font-size:16.5px}
-hr{border:0;height:1px;background:#161b24}
-
-/* ── сетка карточек ── */
-.grid{display:grid;gap:20px}
-.g2{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
-.card{
-  background:linear-gradient(160deg,#11161f,#0d1118);
-  border:1px solid #1c2330;border-radius:14px;padding:26px;
-  transition:border-color .18s,transform .18s
-}
-.card:hover{border-color:#2d3a4d;transform:translateY(-3px)}
-.card .иконка{font-size:26px;margin-bottom:14px;display:block}
-.card h3{font-size:17.5px;margin-bottom:10px}
-.card p{color:#8f9bad;font-size:14.5px}
-
-/* ── сравнение ── */
-.таблица{width:100%;border-collapse:collapse;margin-top:12px;font-size:15px}
-.таблица th{
-  text-align:left;padding:14px 16px;color:#6b7787;font-size:12px;
-  text-transform:uppercase;letter-spacing:.07em;
-  border-bottom:1px solid #232b38;font-weight:600
-}
-.таблица td{padding:14px 16px;border-bottom:1px solid #161b24}
-.таблица tr:last-child td{border-bottom:0}
-.наш{color:#4ade80;font-weight:600}
-.их{color:#5d6979}
-.таблица td:first-child{color:#c8d2e0}
-
-/* ── «у нас есть / у WARP нет» ── */
-.список{list-style:none;display:grid;gap:14px}
-.список li{display:flex;gap:14px;align-items:flex-start;font-size:15.5px}
-.галочка{
-  flex-shrink:0;width:22px;height:22px;border-radius:50%;
-  background:rgba(74,222,128,.13);color:#4ade80;
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:700;margin-top:2px
-}
-.крестик{
-  flex-shrink:0;width:22px;height:22px;border-radius:50%;
-  background:rgba(148,163,184,.1);color:#64748b;
-  display:flex;align-items:center;justify-content:center;
-  font-size:13px;font-weight:700;margin-top:2px
-}
-.список b{color:#fff;font-weight:600}
-.список span{color:#8f9bad}
-
-/* ── цифры ── */
-.цифры{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
-.цифра{
-  background:#11161f;border:1px solid #1c2330;border-radius:12px;
-  padding:24px;text-align:center
-}
-.цифра b{display:block;font-size:32px;color:#38bdf8;font-weight:700;
-  letter-spacing:-.02em}
-.цифра span{font-size:13px;color:#7b8697}
-
-/* ── терминал ── */
-.терминал{
-  background:#05070a;border:1px solid #1c2330;border-radius:12px;
-  overflow:hidden;font-size:13.5px
-}
-.терминал .шапка{
-  background:#0e131b;padding:11px 16px;border-bottom:1px solid #1c2330;
-  display:flex;align-items:center;gap:8px
-}
-.точка{width:11px;height:11px;border-radius:50%}
-.терминал .тело{padding:20px 22px;overflow-x:auto}
-.строка{white-space:pre;color:#c8d2e0}
-.приглашение{color:#38bdf8}
-.ок{color:#4ade80}
-.путь{color:#a78bfa}
-.комментарий{color:#556174;font-style:italic}
-
-/* ── предупреждение ── */
-.важно{
-  background:rgba(245,158,11,.055);border:1px solid rgba(245,158,11,.24);
-  border-radius:12px;padding:26px 28px;margin-top:26px
-}
-.важно h3{color:#fbbf24;font-size:17px;margin-bottom:12px}
-.важно p{color:#b9a888;font-size:15px}
-.важно code{background:rgba(0,0,0,.28);padding:2px 7px;border-radius:4px;
-  color:#fcd34d;font-size:13.5px}
-
-/* ── финальный блок ── */
-.финал{
-  text-align:center;padding:88px 0;
-  border-top:1px solid #161b24
-}
-.финал h2{font-size:clamp(28px,4vw,42px);margin-bottom:16px}
-.финал p{color:#8f9bad;max-width:560px;margin:0 auto 32px}
-footer{
-  border-top:1px solid #161b24;padding:32px 0;
-  color:#5d6979;font-size:13.5px
-}
-footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
-
-@media(max-width:640px){
-  header{padding:64px 0 56px}
-  section{padding:56px 0}
-}
-</style>
+<title>Свой VPN на своём сервере — бесплатный курс и пошаговая инструкция</title>
+<meta name="description" content="Подними личный VPN на собственном сервере за 15 минут. Бесплатный курс из 10 модулей, пошаговая инструкция, готовые скрипты. От 128 ₽ в месяц, без подписки.">
+<meta property="og:title" content="Свой VPN на своём сервере — бесплатный курс">
+<meta property="og:description" content="10 модулей, пошаговая инструкция, готовые скрипты. От 128 ₽ в месяц.">
+<meta property="og:type" content="website">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
+<header class="nav">
   <div class="wrap">
-    <div class="badge"><i></i>AmneziaWG · собственная инфраструктура</div>
-    <h1>VPN, который <em>принадлежит вам</em></h1>
-    <p class="подзаголовок">
-      Не аренда чужого туннеля, а сервер, ключи и статистика в ваших руках.
-      Каждому человеку — свой ключ, который можно отозвать одной командой.
-      Каждому адресу — учёт трафика в байтах.
-    </p>
-    <div class="кнопки">
-      <a class="btn btn-1" href="УСТАНОВКА-ПО-ШАГАМ.md">Пошаговая инструкция</a>
-      <a class="btn btn-2" href="../ТЗ-SORA.md">Техзадание</a>
-      <a class="btn btn-2" href="../README.md">Как пользоваться</a>
-    </div>
+    <a class="brand" href="#top">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 2 4 5.5v6c0 5 3.4 9.4 8 10.5 4.6-1.1 8-5.5 8-10.5v-6L12 2z"
+              stroke="#38bdf8" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="m8.5 12 2.5 2.5 4.5-4.8" stroke="#38bdf8" stroke-width="1.8"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>SORA</span>
+    </a>
+    <nav>
+      <a href="#why">Зачем</a>
+      <a href="#start">Быстрый старт</a>
+      <a href="#course">Курс</a>
+      <a href="#faq">Вопросы</a>
+      <a class="btn-mini" href="https://github.com/petrles444-source/SORA" target="_blank" rel="noopener">GitHub</a>
+    </nav>
   </div>
 </header>
 
-<section>
+<!-- ============ ЭКРАН ГЛАВНЫЙ ============ -->
+<section class="hero" id="top">
   <div class="wrap">
-    <h2>Зачем это, если уже есть Cloudflare WARP</h2>
-    <p class="вступление">
-      WARP работает, он бесплатный и быстрый. Останавливать его незачем.
-      SORA решает другую задачу — ту, которую WARP не умеет вовсе.
+    <div class="hero-badge">Полностью бесплатно · без регистрации</div>
+    <h1>Свой VPN<br><span class="grad">на своём сервере</span></h1>
+    <p class="hero-sub">
+      Поднимите VPN, которым владеете только вы. Свой адрес вместо общего,
+      учёт трафика по каждому человеку, отзыв ключа в один клик.
     </p>
-
-    <table class="таблица">
-      <thead>
-        <tr><th>Возможность</th><th>WARP</th><th>SORA</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Адрес на выходе</td>
-            <td class="их">общий на миллионы людей</td>
-            <td class="наш">только ваш</td></tr>
-        <tr><td>Учёт трафика по людям</td>
-            <td class="их">нет</td>
-            <td class="наш">есть, в байтах</td></tr>
-        <tr><td>Отзыв ключа</td>
-            <td class="их">нет</td>
-            <td class="наш">одна команда</td></tr>
-        <tr><td>Свой DNS</td>
-            <td class="их">нет</td>
-            <td class="наш">да</td></tr>
-        <tr><td>Свой сервер под вашим контролем</td>
-            <td class="их">нет</td>
-            <td class="наш">да</td></tr>
-        <tr><td>Цена</td>
-            <td class="их">бесплатно</td>
-            <td class="наш">ваш сервер</td></tr>
-        <tr><td>Скорость</td>
-            <td class="наш">выше</td>
-            <td class="их">ниже</td></tr>
-      </tbody>
-    </table>
-
-    <p class="вступление" style="margin:32px 0 0">
-      Скорость у WARP выше — у него сеть по всему миру. Честно:
-      SORA на одном ядре и 768&nbsp;МБ выиграет не в скорости.
- Он выигрывает там, где важны адрес и контроль.
-    </p>
-  </div>
-</section>
-
-<section style="padding-top:0">
-  <div class="wrap">
-    <div class="grid g2">
-      <div class="card">
-        <span class="иконка">🔑</span>
-        <h3>Ключи рождаются у вас</h3>
-        <p>
-          Не на чужом сайте и не чужим сервисом — из системного
-          генератора случайных чисел вашего компьютера. Приватная
-          половина никуда не отправляется: она лежит в реестре
-          на вашем диске.
-        </p>
-      </div>
-      <div class="card">
-        <span class="иконка">🚪</span>
-        <h3>Отзыв за секунду</h3>
-        <p>
-          <code class="mono">revoke ivan</code> — и человек отключён.
-          Не удалён, а отключён: вернуть можно так же быстро.
-          Счётчик идёт по байтам, ничего не теряется между замерами.
-        </p>
-      </div>
-      <div class="card">
-        <span class="иконка">📊</span>
-        <h3>Видно, кто сколько качает</h3>
-        <p>
-          Счётчики в iptables, а не в самом VPN: работает одинаково
-          с любой реализацией. Месячный лимит 4000&nbsp;ГБ — и вы
-          знаете, сколько израсходовано, ещё до конца месяца.
-        </p>
-      </div>
-      <div class="card">
-        <span class="иконка">🛡️</span>
-        <h3>Утечки закрыты</h3>
-        <p>
-          DNS резолвится внутри туннеля — провайдер не видит
-          посещённые домены. IPv6 уходит в туннель и там гаснет,
-          а не идёт мимо. Проверка с клиента показывает, что
-          получилось на самом деле.
-        </p>
-      </div>
+    <div class="hero-btns">
+      <a class="btn btn-main" href="#start">Начать за 15 минут</a>
+      <a class="btn btn-ghost" href="курс/Свой-VPN-на-своём-сервере-курс.pdf" download>
+        Скачать курс (PDF)
+      </a>
+    </div>
+    <div class="hero-facts">
+      <div><b>10</b><span>модулей курса</span></div>
+      <div><b>39</b><span>страниц</span></div>
+      <div><b>128 ₽</b><span>в месяц за сервер</span></div>
+      <div><b>0 ₽</b><span>за инструкцию</span></div>
     </div>
   </div>
 </section>
 
-<section>
+<!-- ============ ЗАЧЕМ ============ -->
+<section class="sect" id="why">
   <div class="wrap">
-    <h2>Три команды — и работает</h2>
-    <p class="вступление">
-      На вашем компьютере. Никаких прав администратора.
-    </p>
+    <h2>Зачем поднимать свой, если есть бесплатные</h2>
 
-    <div class="терминал">
-      <div class="шапка">
-        <div class="точка" style="background:#ff5f57"></div>
-        <div class="точка" style="background:#febc2e"></div>
-        <div class="точка" style="background:#28c840"></div>
-        <span class="mono" style="color:#6b7787;font-size:12.5px;margin-left:8px">
-          powershell</span>
+    <div class="cards">
+      <div class="card">
+        <div class="ico">🌐</div>
+        <h3>Общий адрес — это проблема</h3>
+        <p>Миллионы людей выходят с одного адреса. Сайты это видят и
+        режут скорость, показывают капчу, отказывают в доступе.
+        Ваш адрес — только ваш.</p>
       </div>
-      <div class="тело">
-<div class="строка"><span class="путь">SORA\tools&gt;</span> python sora_keys.py init</div>
-<div class="строка">  <span class="ок">Реализация Curve25519 верна</span> — сверена с библиотекой cryptography</div>
-<div class="строка">  <span class="ок">Реестр создан.</span>  подсеть: 10.77.0.0/24</div>
-<div class="строка">&nbsp;</div>
-<div class="строка"><span class="путь">SORA\tools&gt;</span> python sora_keys.py add ivan --note "ноутбук"</div>
-<div class="строка">  <span class="ок">Добавлен:</span> ivan     адрес: 10.77.0.2/32</div>
-<div class="строка">&nbsp;</div>
-<div class="строка"><span class="путь">SORA\tools&gt;</span> python sora_keys.py server --out ..\server\server.conf</div>
-<div class="строка">  <span class="комментарий">// этот файл передаётся администратору сервера</span></div>
-<div class="строка">&nbsp;</div>
-<div class="строка"><span class="путь">SORA\tools&gt;</span> python sora_doctor.py</div>
-<div class="строка">  проверок 25    <span class="ок">ок 12</span>    проблем 0    <span class="комментарий">не проверено 11</span></div>
-<div class="строка">  <span class="ок">Реестр в порядке.</span> <span class="комментарий">// «не проверено» ≠ «всё хорошо»</span></div>
+      <div class="card">
+        <div class="ico">🔒</div>
+        <h3>Чужое железо — чужие руки</h3>
+        <p>Пользуясь чужим VPN, ваш трафик идёт через чужой сервер.
+        Владелец технически может видеть, куда вы ходите.
+        Своим сервером вы эту возможность убираете.</p>
       </div>
+      <div class="card">
+        <div class="ico">📊</div>
+        <h3>Лимиты и честный учёт</h3>
+        <p>Вы видите, кто сколько скачал, и ставите лимиты сами.
+        Один человек не съест канал для всех остальных.</p>
+      </div>
+    </div>
+
+    <div class="honest">
+      <div class="honest-title">Честно о том, чего это не даёт</div>
+      <ul>
+        <li><b>Банк не откроется.</b> Он увидит зарубежный адрес и не
+        установит соединение. Это не поломка. Решение — исключения,
+        раздел ниже.</li>
+        <li><b>Провайдер всё видит.</b> Он видит факт подключения к вашему
+        серверу и объём трафика. Что именно вы передаёте внутри — нет.</li>
+        <li><b>Это не анонимность.</b> Сайт запомнит вас по серверному
+        адресу и узнает при следующем визите с домашнего.</li>
+      </ul>
     </div>
   </div>
 </section>
 
-<section>
+<!-- ============ КАК ЭТО РАБОТАЕТ ============ -->
+<section class="sect alt">
   <div class="wrap">
-    <h2>Проверено, а не обещано</h2>
-    <p class="вступление">
-      Каждая цифра получена прогоном на живой машине, а не взята
-      из описания.
-    </p>
+    <h2>Как это работает</h2>
+    <img class="diagram" src="img/схема-архитектура.svg"
+         alt="Схема: устройства через туннель AmneziaWG на ваш VPS и дальше в интернет">
+    <p class="cap">Ваш телефон и ноутбук со своими ключами → шифрованный туннель →
+    ваш VPS → интернет. Сайты видят адрес сервера, а не ваш домашний.</p>
+  </div>
+</section>
 
-    <div class="цифры">
-      <div class="цифра"><b>50</b><span>сверок криптографии</span></div>
-      <div class="цифра"><b>105</b><span>автоматических тестов</span></div>
-      <div class="цифра"><b>0</b><span>ложных тревог</span></div>
-      <div class="цифра"><b>20</b><span>файлов в комплекте</span></div>
+<!-- ============ БЫСТРЫЙ СТАРТ ============ -->
+<section class="sect" id="start">
+  <div class="wrap">
+    <h2>Три команды</h2>
+    <p class="lead">Если вы умеете открыть терминал и вставить строку — этого достаточно.
+      Полная инструкция, если нет, — в курсе.</p>
+
+    <img class="diagram term" src="img/быстрый-старт.svg"
+         alt="Терминал с тремя командами: клонировать репозиторий, выпустить ключи, собрать файл для сервера">
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-n">1</div>
+        <h3>Скачайте проект</h3>
+        <p>В терминале на своём компьютере:</p>
+        <pre><code>git clone https://github.com/petrles444-source/SORA.git
+cd SORA/tools</code></pre>
+      </div>
+      <div class="step">
+        <div class="step-n">2</div>
+        <h3>Выпустите ключи</h3>
+        <p>По одному ключу на устройство. Имена — любые, это подписи:</p>
+        <pre><code>python sora_keys.py init
+python sora_keys.py add ivan --note "телефон"
+python sora_keys.py add olga --note "ноутбук"</code></pre>
+      </div>
+      <div class="step">
+        <div class="step-n">3</div>
+        <h3>Соберите файл для сервера</h3>
+        <p>Появится <code>server/server.conf</code> — его передаёте на
+        сервер и запускаете установщик:</p>
+        <pre><code>python sora_keys.py server --out ../server/server.conf
+scp server/server.conf root@ВАШ_АДРЕС:/etc/sora/server.conf</code></pre>
+      </div>
     </div>
 
-    <div class="grid g3" style="margin-top:24px">
-      <div class="card">
-        <h3 style="font-size:15px">Криптография</h3>
-        <p>Curve25519 сверена с эталонной библиотекой: 40 обменов
-        и 10 проверок симметрии, совпадений 50 из 50. Реализация
-        встроена в файл, внешние библиотеки не нужны.</p>
-      </div>
-      <div class="card">
-        <h3 style="font-size:15px">Генератор</h3>
-        <p>38 тестов: формат ключей, соответствие публичного
-        приватному, отказ на мусорных адресах, отказ на попытке
-        подмешать в конфиг чужую секцию с чужим ключом.</p>
-      </div>
-      <div class="card">
-        <h3 style="font-size:15px">Учёт трафика</h3>
-        <p>17 тестов счёта и 13 тестов отключения — на битом,
-        пустом и обрезанном конфиге. Счёт сходится с ручным
-        расчётом байт в байт.</p>
-      </div>
+    <div class="check-box">
+      <div class="check-t">Проверьте, что всё работает</div>
+      <p>На своём компьютере:</p>
+      <pre><code>python sora_doctor.py</code></pre>
+      <p>На сервере:</p>
+      <pre><code>sora-selftest.sh</code></pre>
+      <p>Ожидаемый вид — строки <code>[ OK ]</code>. Если где-то
+      <code>[ ОШИБКА ]</code>, идите дальше только после исправления.</p>
+    </div>
+
+    <div class="cta-row">
+      <a class="btn btn-main" href="курс/Свой-VPN-на-своём-сервере-курс.pdf" download>
+        Полный курс, 39 страниц — PDF
+      </a>
+      <a class="btn btn-ghost" href="https://github.com/petrles444-source/SORA/blob/main/docs/БЫСТРЫЙ-СТАРТ.md">
+        Быстрый старт текстом
+      </a>
     </div>
   </div>
 </section>
 
-<section>
+<!-- ============ ИСКЛЮЧЕНИЯ ============ -->
+<section class="sect alt" id="split">
   <div class="wrap">
-    <h2>Найденные и закрытые дыры</h2>
-    <p class="вступление">
-      Аудит нужен не для красивого отчёта. Он нашёл вещи,
-      которые вы бы не увидели при первом подключении.
-    </p>
+    <h2>Настройте исключения — и банк заработает</h2>
+    <p class="lead">Это самый важный шаг для удобства. Без него российские
+    сайты тормозят, а банк не открывается совсем.</p>
 
-    <ul class="список">
-      <li>
-        <span class="галочка">✓</span>
-        <div><b>Подмешивание чужого ключа в конфиг.</b>
-        <span>— значение адреса с переводом строки добавляло в
-        конфиг сервера постороннюю секцию с чужим публичным ключом.
-        Через это в туннель можно было добавить себя. Закрыто
-        проверкой всех входных данных.</span></div>
-      </li>
-      <li>
-        <span class="галочка">✓</span>
-        <div><b>Парсер ключей возвращал ноль людей.</b>
-        <span>— имя человека живёт в комментарии, а код отбрасывал
-        комментарии раньше, чем читал имя. Учёт тихо приписал бы
-        трафик ничому. Это хуже, чем явная ошибка.</span></div>
-      </li>
-      <li>
-        <span class="галочка">✓</span>
-        <div><b>Месяц зачитывался дважды.</b>
-        <span>— счётчики живут вместе со службой и при смене месяца
-        не обнуляются. Объём у каждого удваивался бы, и сверить
-        с логом провайдера было бы нечем.</span></div>
-      </li>
-      <li>
-        <span class="галочка">✓</span>
-        <div><b>Возврат отключённого был перевёрнут.</b>
-        <span>— функция читала резервную копию и снова вырезала
-        из неё человека. То есть гарантированно не возвращала.
-        Тихо.</span></div>
-      </li>
-      <li>
-        <span class="галочка">✓</span>
-        <div><b>Диагностика падала в момент обращения.</b>
-        <span>— <code class="mono">--out</code> и <code class="mono">--html</code>
-        открывали файл напрямую, не создавая каталог. Вместо причины
-        человек получал трассировку Python на пол-экрана. Особенно
-        скверно у <code class="mono">--html</code>: отчёт заказывают
-        именно тогда, когда что-то сломалось.</span></div>
-      </li>
-      <li>
-        <span class="галочка">✓</span>
-        <div><b>Bash не принимает кириллицу в именах переменных.</b>
-        <span>— проверено реальным запуском, а не чтением. Один
-        скрипт просто не запустился бы. При этом <code class="mono">bash -n</code>
-        его пропускал: он проверяет синтаксис, но не разрешает
-        переменные.</span></div>
-      </li>
-    </ul>
+    <div class="two">
+      <div class="col">
+        <h3>Без исключений</h3>
+        <ul class="minus">
+          <li>Весь трафик идёт в туннель</li>
+          <li>Российские сайты медленнее: путь туда и обратно длинный</li>
+          <li>Банк отказывает: видит зарубежный адрес</li>
+          <li>Месячный лимит уходит за день</li>
+        </ul>
+      </div>
+      <div class="col good">
+        <h3>С исключениями</h3>
+        <ul class="plus">
+          <li>В туннель идёт только то, что без него не открывается</li>
+          <li>Российские сайты работают как обычно</li>
+          <li>Банк видит ваш обычный адрес и открывается</li>
+          <li>Лимита хватает на месяц</li>
+        </ul>
+      </div>
+    </div>
 
-    <div class="важно">
-      <h3>Чего здесь нет и не будет</h3>
-      <p>
-        Ротации IP для обхода лимитов сторонних сервисов.
-        Это нарушение условий чужих сервисов и почти гарантированный
-        бан существующих аккаунтов. Задача была пересмотрена
-        15.10.2026, пункт снят и зафиксирован в техзадании.
-      </p>
+    <p class="lead">В приложении AmneziaVPN: <b>Настройки → Параметры
+    маршрутизации → Разделить трафик</b>. Включите «Исключить заблокированные
+    адреса» и впишите:</p>
+
+    <pre class="big"><code>geoip:RU
+geoip:SU</code></pre>
+
+    <p class="cap">Подробно — модуль 7 курса.</p>
+  </div>
+</section>
+
+<!-- ============ КУРС ============ -->
+<section class="sect" id="course">
+  <div class="wrap">
+    <h2>Что внутри курса</h2>
+    <div class="mod-grid">
+      <div class="mod"><b>0</b><span>Что такое VPN и зачем свой</span></div>
+      <div class="mod"><b>1</b><span>Подготовка: выбор сервера</span></div>
+      <div class="mod"><b>2</b><span>Первый вход и обновления</span></div>
+      <div class="mod"><b>3</b><span>Безопасность до установки</span></div>
+      <div class="mod"><b>4</b><span>Установка VPN</span></div>
+      <div class="mod"><b>5</b><span>Ключи и их отзыв</span></div>
+      <div class="mod"><b>6</b><span>Подключение первого устройства</span></div>
+      <div class="mod"><b>7</b><span>Настройка исключений</span></div>
+      <div class="mod"><b>8</b><span>Учёт трафика и лимиты</span></div>
+      <div class="mod"><b>9</b><span>Обслуживание и откат</span></div>
+      <div class="mod"><b>10</b><span>Бонус: прокси для Telegram</span></div>
+      <div class="mod"><b>A–C</b><span>Словарик, шпаргалка, таблица ошибок</span></div>
+    </div>
+
+    <div class="download">
+      <div>
+        <h3>Свой VPN на своём сервере</h3>
+        <p>Практический курс · 39 страниц · можно распечатать</p>
+      </div>
+      <a class="btn btn-main" href="курс/Свой-VPN-на-своём-сервере-курс.pdf" download>
+        Скачать PDF
+      </a>
     </div>
   </div>
 </section>
 
-<section>
-  <div class="wrap">
-    <h2>Как развернуть</h2>
-    <p class="вступление">
-      Техзадание написано для администратора, а не для вас.
-      Он откроет один файл и выполнит две команды.
-    </p>
+<!-- ============ ВОПРОСЫ ============ -->
+<section class="sect alt" id="faq">
+  <div class="wrap narrow">
+    <h2>Частые вопросы</h2>
 
-    <div class="grid g3">
-      <div class="card">
-        <span class="иконка">1</span>
-        <h3 style="font-size:16px">Вы генерируете ключи</h3>
-        <p>На своём компьютере. Файл <code class="mono">server.conf</code>
-        получается сам. Он содержит приватные ключи — передавать
-        его по открытой почте нельзя.</p>
-      </div>
-      <div class="card">
-        <span class="иконка">2</span>
-        <h3 style="font-size:16px">Админ ставит</h3>
-        <p><code class="mono">bash install_sora.sh</code> — и всё.
-        Пятнадцать шагов, каждый проверяется. При любой неудаче
-        скрипт откатывает сам.</p>
-      </div>
-      <div class="card">
-        <span class="иконка">3</span>
-        <h3 style="font-size:16px">Вы подключаетесь</h3>
-        <p>Вставляете конфиг в Amnezia. Проверяете, что снаружи
-        виден ваш адрес, и что DNS не утекает мимо туннеля.</p>
-      </div>
-    </div>
+    <details><summary>У меня совсем нет опыта. Я справлюсь?</summary>
+      <p>Курс написан для человека, который открыл терминал первый раз.
+      Каждая команда дана текстом, для каждой написано, как понять, что она
+      отработала. Если всё равно непонятно — скормите вывод ошибки любой
+      нейросети, это работает лучше поиска.</p>
+    </details>
+
+    <details><summary>Сколько это стоит?</summary>
+      <p>Инструкция и курс — бесплатно. Платите только за VPS-сервер: от
+      128 ₽ в месяц. Больше ничего не нужно: ни подписки, ни домена, ни
+      платных ключей.</p>
+    </details>
+
+    <details><summary>Нужен ли домен?</summary>
+      <p>Нет. Прокси и VPN работают по IP-адресу. Домен нужен только если вы
+      захотите поднять WEB-прокси для Telegram — это необязательный бонус.</p>
+    </details>
+
+    <details><summary>А если у меня уже есть VPN?</summary>
+      <p>Можно поставить рядом. Ваш текущий никуда не денется, а новый будет
+      отдельным ключом на отдельном устройстве. Так удобнее: старый для работы,
+      новый для себя.</p>
+    </details>
+
+    <details><summary>Это законно?</summary>
+      <p>Да. Установка VPN на собственном сервере — обычная настройка
+      собственного оборудования. Ничего не запрещено ни в чём.</p>
+    </details>
+
+    <details><summary>Что если что-то не заработает?</summary>
+      <p>Начните с <code>sora_doctor.py</code> на своём компьютере и
+      <code>sora-selftest.sh</code> на сервере. Оба скажут, что сломано, и
+      дадут готовую команду. Если их вывода не хватит — задайте вопрос в
+      Issues на GitHub или спросите нейросеть.</p>
+    </details>
   </div>
 </section>
 
-<div class="финал">
-  <div class="wrap">
-    <h2>Свой адрес вместо общего</h2>
-    <p>
-      WARP остаётся — он быстрый и бесплатный. SORA нужен там,
-      где важно, чтобы адрес был ваш, а трафик считался по людям.
-    </p>
-    <div class="кнопки" style="justify-content:center">
-      <a class="btn btn-1" href="УСТАНОВКА-ПО-ШАГАМ.md">Открыть инструкцию</a>
-      <a class="btn btn-2" href="../ТЗ-SORA.md">Техзадание</a>
+<!-- ============ ВЫХОДНОЙ БЛОК ============ -->
+<section class="outro">
+  <div class="wrap narrow">
+    <h2>Готовы начать?</h2>
+    <p>Скачайте курс, пройдите модуль 1 и поставьте сервер. Первый
+    подключённый телефон — через пятнадцать минут.</p>
+    <div class="hero-btns center">
+      <a class="btn btn-main" href="курс/Свой-VPN-на-своём-сервере-курс.pdf" download>
+        Скачать курс
+      </a>
+      <a class="btn btn-ghost" href="https://github.com/petrles444-source/SORA" target="_blank" rel="noopener">
+        Весь проект на GitHub
+      </a>
     </div>
   </div>
-</div>
+</section>
 
 <footer>
   <div class="wrap">
-    <span>SORA · AmneziaWG · собственная инфраструктура</span>
-    <span>Проверено на Windows и Debian 12 · 15 октября 2026</span>
+    <p>Материал можно свободно копировать и использовать в своих курсах при
+    указании первоисточника. Все команды проверены на настоящем сервере.</p>
+    <p class="dim">SORA · открытый проект · <a href="https://github.com/petrles444-source/SORA" target="_blank" rel="noopener">GitHub</a></p>
   </div>
 </footer>
 

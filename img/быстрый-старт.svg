@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 340" font-family="Consolas,Menlo,Monaco,monospace">
+  <rect width="900" height="340" fill="#1a202c"/>
+
+  <text x="24" y="34" font-size="15" fill="#68d391" font-weight="700">Быстрый старт: три команды и VPN работает</text>
+
+  <!-- Шаг 1 -->
+  <rect x="24" y="52" width="852" height="42" rx="6" fill="#2d3748"/>
+  <circle cx="46" cy="73" r="12" fill="#4299e1"/>
+  <text x="46" y="78" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="700">1</text>
+  <text x="70" y="78" font-size="13.5" fill="#e2e8f0">На своём компьютере: скопировать репозиторий</text>
+  <text x="30" y="118" font-size="13" fill="#9ae6b4">$ git clone https://github.com/ВАШ-НИК/sora.git &amp;&amp; cd sora/tools</text>
+
+  <!-- Шаг 2 -->
+  <rect x="24" y="138" width="852" height="42" rx="6" fill="#2d3748"/>
+  <circle cx="46" cy="159" r="12" fill="#4299e1"/>
+  <text x="46" y="164" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="700">2</text>
+  <text x="70" y="164" font-size="13.5" fill="#e2e8f0">Создать ключи для себя и для близких</text>
+  <text x="30" y="204" font-size="13" fill="#9ae6b4">$ python sora_keys.py init</text>
+  <text x="30" y="226" font-size="13" fill="#9ae6b4">$ python sora_keys.py add ivan  --note "телефон"</text>
+  <text x="30" y="248" font-size="13" fill="#9ae6b4">$ python sora_keys.py add olga  --note "ноутбук"</text>
+
+  <!-- Шаг 3 -->
+  <rect x="24" y="268" width="852" height="42" rx="6" fill="#2d3748"/>
+  <circle cx="46" cy="289" r="12" fill="#4299e1"/>
+  <text x="46" y="294" font-size="13" fill="#ffffff" text-anchor="middle" font-weight="700">3</text>
+  <text x="70" y="294" font-size="13.5" fill="#e2e8f0">Получить файл для сервера и проверить</text>
+  <text x="30" y="330" font-size="13" fill="#9ae6b4">$ python sora_keys.py server --out ../server/server.conf</text>
+</svg>
